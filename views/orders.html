@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Orders - Kanban Inventory</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      background-color: #f7f9fc;
+      color: #333;
+    }
+
+    aside {
+      width: 220px;
+      background: #fff;
+      border-right: 1px solid #ddd;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    aside h2 {
+      margin-bottom: 20px;
+      font-size: 20px;
+      color: #007bff;
+    }
+
+    aside nav a {
+      display: block;
+      margin: 12px 0;
+      color: #555;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    main {
+      flex: 1;
+      padding: 30px 40px;
+      position: relative;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+
+    .search input {
+      width: 300px;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .orders-summary {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .orders-summary div {
+      background: #fff;
+      padding: 14px;
+      border-radius: 8px;
+      box-shadow: 0 0 3px rgba(0,0,0,0.1);
+      flex: 1;
+    }
+
+    .orders-table {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table th, table td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    table td.status-delayed {
+      color: orange;
+    }
+
+    table td.status-confirmed {
+      color: green;
+    }
+
+    table td.status-returned {
+      color: red;
+    }
+
+    table td.status-out {
+      color: teal;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-blue {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .filters {
+      margin-top: 10px;
+    }
+
+    .popup-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .popup {
+      background: white;
+      padding: 30px;
+      width: 420px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .popup h3 {
+      margin-bottom: 20px;
+    }
+
+    .popup label {
+      display: block;
+      margin: 12px 0 4px;
+      font-size: 14px;
+    }
+
+    .popup input, .popup select {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .popup .checkbox {
+      display: flex;
+      align-items: center;
+      margin: 12px 0;
+    }
+
+    .popup .checkbox input {
+      margin-right: 8px;
+    }
+
+    .popup .actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .popup .actions button {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+    }
+
+    .btn-cancel {
+      background: #e0e0e0;
+    }
+
+    .btn-submit {
+      background: #007bff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <aside>
+    <h2>KANBAN</h2>
+    <nav>
+      <a href="#">Dashboard</a>
+      <a href="#">Inventory</a>
+      <a href="#">Reports</a>
+      <a href="#">Suppliers</a>
+      <a href="#" style="color: #007bff;">Orders</a>
+      <a href="#">Manage Store</a>
+      <a href="#">Settings</a>
+      <a href="#">Log Out</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <div class="search">
+        <input type="text" placeholder="Search product, supplier, order" />
+      </div>
+      <div class="avatar">👤</div>
+    </div>
+
+    <div class="orders-summary">
+      <div>
+        <strong>Total Orders</strong><br>37
+      </div>
+      <div>
+        <strong>Total Received</strong><br>₹25000
+      </div>
+      <div>
+        <strong>Total Returned</strong><br>₹2500
+      </div>
+      <div>
+        <strong>On the way</strong><br>12
+      </div>
+    </div>
+
+    <div class="orders-table">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3>Orders</h3>
+        <button class="btn btn-blue" onclick="togglePopup()">Add Product</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Products</th>
+            <th>Order Value</th>
+            <th>Quantity</th>
+            <th>Order ID</th>
+            <th>Expected Delivery</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Maggi</td><td>₹4300</td><td>43 Packets</td><td>7535</td><td>11/12/22</td><td class="status-delayed">Delayed</td>
+          </tr>
+          <tr>
+            <td>Bourn Vita</td><td>₹502</td><td>14 Packets</td><td>2275</td><td>8/1/22</td><td class="status-out">Out for delivery</td>
+          </tr>
+          <tr>
+            <td>Horlicks</td><td>₹370</td><td>5 Packets</td><td>2427</td><td>9/1/23</td><td class="status-returned">Returned</td>
+          </tr>
+          <tr>
+            <td>Ariel</td><td>₹4078</td><td>23 Packets</td><td>2757</td><td>15/12/23</td><td class="status-delayed">Delayed</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- POPUP Add Order -->
+  <div class="popup-overlay" id="orderPopup" style="display:none;">
+    <div class="popup">
+      <h3>New Order</h3>
+      <label>Product Name</label>
+      <input type="text" placeholder="Enter product name"/>
+      <label>Product ID</label>
+      <input type="text" placeholder="Enter product ID"/>
+      <label>Category</label>
+      <select>
+        <option>Select product category</option>
+        <option>Food</option>
+        <option>Drink</option>
+      </select>
+      <label>Order value</label>
+      <input type="text" placeholder="Enter order value"/>
+      <label>Quantity</label>
+      <input type="text" placeholder="Enter product quantity"/>
+      <label>Unit</label>
+      <input type="text" placeholder="Enter product unit"/>
+      <label>Buying price</label>
+      <input type="text" placeholder="Enter buying price"/>
+      <label>Date of delivery</label>
+      <input type="date"/>
+
+      <div class="checkbox">
+        <input type="checkbox" id="notify" />
+        <label for="notify">Notify on the date of delivery</label>
+      </div>
+
+      <div class="actions">
+        <button class="btn-cancel" onclick="togglePopup()">Discard</button>
+        <button class="btn-submit">Add Product</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePopup() {
+      const popup = document.getElementById('orderPopup');
+      popup.style.display = popup.style.display === 'none' ? 'flex' : 'none';
+    }
+  </script>
+</body>
+</html>

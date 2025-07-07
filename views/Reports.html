@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports - Kanban</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fc;
+    }
+    .sidebar {
+      height: 100vh;
+      background: #fff;
+      border-right: 1px solid #ddd;
+      padding: 20px;
+    }
+    .sidebar h2 {
+      font-size: 20px;
+      color: #007bff;
+      margin-bottom: 20px;
+    }
+    .sidebar a {
+      display: block;
+      margin: 12px 0;
+      color: #444;
+      text-decoration: none;
+    }
+    .sidebar a.active {
+      color: #007bff;
+      font-weight: bold;
+    }
+    .content {
+      padding: 30px;
+    }
+    .card-title small {
+      font-size: 14px;
+      color: gray;
+    }
+    .increase {
+      color: green;
+      font-weight: bold;
+    }
+    canvas {
+      max-height: 250px;
+    }
+  </style>
+</head>
+<body>
+<div class="d-flex">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>KANBAN</h2>
+    <a href="#">Dashboard</a>
+    <a href="#">Inventory</a>
+    <a href="#" class="active">Reports</a>
+    <a href="#">Suppliers</a>
+    <a href="#">Orders</a>
+    <a href="#">Manage Store</a>
+    <a href="#">Settings</a>
+    <a href="#">Log Out</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content container-fluid">
+    <div class="d-flex justify-content-between mb-4">
+      <input class="form-control w-50" placeholder="Search product, supplier, order" />
+      <div>👤</div>
+    </div>
+
+    <!-- Overview Cards -->
+    <div class="row mb-4">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card p-3">
+              <div class="card-title">Total Profit</div>
+              <h4>₹21,190</h4>
+              <small class="text-muted">Net purchase value: ₹17,432</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card p-3">
+              <div class="card-title">Revenue</div>
+              <h4>₹18,300</h4>
+              <small class="text-muted">Net sales value: ₹80,432</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card p-3">
+              <div class="card-title">Sales</div>
+              <h4>₹17,432</h4>
+              <small class="text-muted">YoY Profit: ₹110,432</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-3">
+          <div class="card-title d-flex justify-content-between">Best selling category <a href="#">See All</a></div>
+          <table class="table table-sm">
+            <tbody>
+              <tr><td>Vegetable</td><td>₹20,000</td><td class="increase">3.2%</td></tr>
+              <tr><td>Instant Food</td><td>₹20,000</td><td class="increase">2%</td></tr>
+              <tr><td>Households</td><td>₹22,000</td><td class="increase">1.5%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="card p-3 mb-4">
+      <div class="d-flex justify-content-between">
+        <div><strong>Profit & Revenue</strong></div>
+        <button class="btn btn-outline-secondary btn-sm">Weekly</button>
+      </div>
+      <canvas id="reportChart"></canvas>
+    </div>
+
+    <!-- Best Selling Product -->
+    <div class="card p-3">
+      <div class="card-title d-flex justify-content-between">Best selling product <a href="#">See All</a></div>
+      <table class="table table-bordered table-sm">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Product ID</th>
+            <th>Category</th>
+            <th>Remaining Quantity</th>
+            <th>Turn Over</th>
+            <th>Increase By</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Tomato</td><td>2367</td><td>Vegetable</td><td>225 kg</td><td>₹17,000</td><td class="increase">2.3%</td></tr>
+          <tr><td>Onion</td><td>2581</td><td>Vegetable</td><td>200 kg</td><td>₹12,000</td><td class="increase">1.3%</td></tr>
+          <tr><td>Maggi</td><td>5681</td><td>Instant Food</td><td>200 Packet</td><td>₹8,000</td><td class="increase">1%</td></tr>
+          <tr><td>Surf Excel</td><td>23567</td><td>Household</td><td>125 Packet</td><td>₹6,000</td><td class="increase">1%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ctx = document.getElementById('reportChart');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'],
+      datasets: [
+        {
+          label: 'Revenue',
+          data: [20000, 25000, 45000, 60000, 50000, 58000, 45000],
+          borderColor: '#007bff',
+          fill: false
+        },
+        {
+          label: 'Profit',
+          data: [15000, 20000, 35000, 40000, 36000, 45000, 38000],
+          borderColor: 'orange',
+          fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
