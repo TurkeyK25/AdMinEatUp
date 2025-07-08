@@ -2,120 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inventory Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Kanban</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    function toggleForm() {
-      const form = document.getElementById('productForm');
-      form.classList.toggle('hidden');
-    }
-  </script>
 </head>
-<body class="bg-gray-100">
-  <div class="flex min-h-screen">
-    <!-- Sidebar -->
-    <aside class="w-64 bg-white shadow-md p-6">
-      <h1 class="text-2xl font-bold text-blue-600 mb-8">KANBAN</h1>
-      <nav class="space-y-4">
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Dashboard</a>
-        <a href="#" class="block text-blue-600 font-semibold">Inventory</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Reports</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Suppliers</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Orders</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Manage Store</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Settings</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Log Out</a>
-      </nav>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="flex-1 p-6 relative">
-      <!-- Search Bar -->
-      <div class="flex justify-between items-center mb-6">
-        <input
-          type="text"
-          placeholder="Search product, supplier, order"
-          class="w-full max-w-lg px-4 py-2 border rounded"
-        />
-        <img src="https://via.placeholder.com/32" alt="User" class="w-8 h-8 rounded-full ml-4" />
-      </div>
-
-      <!-- Inventory Overview -->
-      <div class="grid grid-cols-4 gap-4 mb-6">
-        <div class="bg-white p-4 rounded shadow">
-          <p class="text-sm text-gray-500">Categories</p>
-          <p class="text-lg font-bold">14</p>
-          <p class="text-xs text-gray-400">Last 7 days</p>
-        </div>
-        <div class="bg-white p-4 rounded shadow">
-          <p class="text-sm text-gray-500">Total Products</p>
-          <p class="text-lg font-bold">868</p>
-          <p class="text-xs text-gray-400">₹25000 Revenue</p>
-        </div>
-        <div class="bg-white p-4 rounded shadow">
-          <p class="text-sm text-gray-500">Top Selling</p>
-          <p class="text-lg font-bold">5</p>
-          <p class="text-xs text-gray-400">₹2500 Cost</p>
-        </div>
-        <div class="bg-white p-4 rounded shadow">
-          <p class="text-sm text-gray-500">Low Stocks</p>
-          <p class="text-lg font-bold text-red-500">12</p>
-          <p class="text-xs text-gray-400">2 Not in stock</p>
-        </div>
-      </div>
-
-      <!-- Products Table Header -->
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-semibold">Products</h2>
-        <button onclick="toggleForm()" class="bg-blue-600 text-white px-4 py-2 rounded">Add Product</button>
-      </div>
-
-      <!-- Add Product Form -->
-      <div id="productForm" class="absolute top-24 left-1/2 transform -translate-x-1/2 bg-white p-6 rounded shadow-lg w-[400px] hidden z-10">
-        <h3 class="text-lg font-bold mb-4">New Product</h3>
-        <input type="text" placeholder="Product Name" class="w-full mb-3 px-3 py-2 border rounded" />
-        <input type="text" placeholder="Product ID" class="w-full mb-3 px-3 py-2 border rounded" />
-        <input type="text" placeholder="Category" class="w-full mb-3 px-3 py-2 border rounded" />
-        <input type="text" placeholder="Buying Price" class="w-full mb-3 px-3 py-2 border rounded" />
-        <input type="text" placeholder="Quantity" class="w-full mb-3 px-3 py-2 border rounded" />
-        <input type="text" placeholder="Unit" class="w-full mb-3 px-3 py-2 border rounded" />
-        <input type="date" placeholder="Expiry Date" class="w-full mb-3 px-3 py-2 border rounded" />
-        <input type="text" placeholder="Threshold Value" class="w-full mb-4 px-3 py-2 border rounded" />
-        <div class="flex justify-end gap-2">
-          <button onclick="toggleForm()" class="px-4 py-2 bg-gray-300 rounded">Discard</button>
-          <button class="px-4 py-2 bg-blue-600 text-white rounded">Add Product</button>
-        </div>
-      </div>
-
-      <!-- Products Table -->
-      <div class="bg-white rounded shadow overflow-x-auto">
-        <table class="w-full text-sm text-left">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="p-3">Products</th>
-              <th class="p-3">Buying Price</th>
-              <th class="p-3">Quantity</th>
-              <th class="p-3">Threshold Value</th>
-              <th class="p-3">Expiry Date</th>
-              <th class="p-3">Availability</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="border-t">
-              <td class="p-3">MaggI</td>
-              <td class="p-3">₹430</td>
-              <td class="p-3">43 Packets</td>
-              <td class="p-3">12 Packets</td>
-              <td class="p-3">1/12/22</td>
-              <td class="p-3 text-green-600">In stock</td>
-            </tr>
-            <!-- More rows can go here -->
-          </tbody>
-        </table>
-        <div class="p-3 text-right text-sm text-gray-500">Page 1 of 10</div>
-      </div>
-    </main>
+<body class="flex bg-gray-100 min-h-screen overflow-hidden">
+  <!-- Sidebar -->
+  <div id="sidebar" class="h-screen overflow-hidden"></div>
+  <script>
+    fetch('../menu/Sidebar.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('sidebar').innerHTML = html;
+        const currentPage = window.location.pathname.split("/").pop();
+        const links = document.querySelectorAll(".nav-link");
+        links.forEach(link => {
+          if (link.getAttribute("data-page") === currentPage) {
+            link.classList.add("text-blue-600", "font-semibold");
+          } else {
+            link.classList.remove("text-blue-600", "font-semibold");
+          }
+        });
+      });
+  </script>
+  <!-- Main Content -->
+  <div class="flex-1 p-8 overflow-y-auto">
+    <!-- ...dashboard content here... -->
   </div>
 </body>
 </html>
