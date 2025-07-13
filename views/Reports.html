@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reports - Kanban</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="flex bg-gray-100 min-h-screen overflow-hidden">
+  <!-- Sidebar -->
+  <div id="sidebar" class="h-screen overflow-hidden"></div>
+  <script>
+    fetch('../menu/Sidebar.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('sidebar').innerHTML = html;
+
+        const currentPage = window.location.pathname.split("/").pop();
+        const links = document.querySelectorAll(".nav-link");
+        links.forEach(link => {
+          if (link.getAttribute("data-page") === currentPage) {
+            link.classList.add("text-blue-600", "font-semibold");
+          } else {
+            link.classList.remove("text-blue-600", "font-semibold");
+          }
+        });
+      });
+  </script>
+
+  <!-- Main Content -->
+  <div class="flex-1 p-8 overflow-y-auto">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <input type="text" placeholder="Search product, supplier, order" class="px-4 py-2 border rounded w-96" />
+      <div class="text-xl">👤</div>
+    </div>
+
+    <!-- Overview Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-white shadow rounded p-4">
+        <h3 class="text-sm font-semibold text-gray-500">Total Profit</h3>
+        <p class="text-2xl font-bold">₹21,190</p>
+        <p class="text-xs text-gray-400">Net purchase value: ₹17,432</p>
+      </div>
+      <div class="bg-white shadow rounded p-4">
+        <h3 class="text-sm font-semibold text-gray-500">Revenue</h3>
+        <p class="text-2xl font-bold">₹18,300</p>
+        <p class="text-xs text-gray-400">Net sales value: ₹80,432</p>
+      </div>
+      <div class="bg-white shadow rounded p-4">
+        <h3 class="text-sm font-semibold text-gray-500">Sales</h3>
+        <p class="text-2xl font-bold">₹17,432</p>
+        <p class="text-xs text-gray-400">YoY Profit: ₹110,432</p>
+      </div>
+      <div class="bg-white shadow rounded p-4">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-sm font-semibold text-gray-500">Best selling category</h3>
+          <a href="#" class="text-xs text-blue-600">See All</a>
+        </div>
+        <table class="w-full text-sm">
+          <tbody>
+            <tr>
+              <td>Vegetable</td>
+              <td class="text-right">₹20,000</td>
+              <td class="text-green-600 text-right">3.2%</td>
+            </tr>
+            <tr>
+              <td>Instant Food</td>
+              <td class="text-right">₹20,000</td>
+              <td class="text-green-600 text-right">2%</td>
+            </tr>
+            <tr>
+              <td>Households</td>
+              <td class="text-right">₹22,000</td>
+              <td class="text-green-600 text-right">1.5%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="bg-white shadow rounded p-6 mb-6">
+      <div class="flex justify-between items-center mb-4">
+        <div class="font-semibold">Profit & Revenue</div>
+        <button class="border px-3 py-1 rounded text-sm text-gray-600">Weekly</button>
+      </div>
+      <canvas id="reportChart"></canvas>
+    </div>
+
+    <!-- Best Selling Product -->
+    <div class="bg-white shadow rounded p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold">Best selling product</h3>
+        <a href="#" class="text-blue-600 text-sm">See All</a>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left text-sm">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="p-2">Product</th>
+              <th class="p-2">Product ID</th>
+              <th class="p-2">Category</th>
+              <th class="p-2">Remaining Quantity</th>
+              <th class="p-2">Turn Over</th>
+              <th class="p-2">Increase By</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="p-2">Tomato</td>
+              <td class="p-2">2367</td>
+              <td class="p-2">Vegetable</td>
+              <td class="p-2">225 kg</td>
+              <td class="p-2">₹17,000</td>
+              <td class="p-2 text-green-600">2.3%</td>
+            </tr>
+            <tr>
+              <td class="p-2">Onion</td>
+              <td class="p-2">2581</td>
+              <td class="p-2">Vegetable</td>
+              <td class="p-2">200 kg</td>
+              <td class="p-2">₹12,000</td>
+              <td class="p-2 text-green-600">1.3%</td>
+            </tr>
+            <tr>
+              <td class="p-2">Maggi</td>
+              <td class="p-2">5681</td>
+              <td class="p-2">Instant Food</td>
+              <td class="p-2">200 Packet</td>
+              <td class="p-2">₹8,000</td>
+              <td class="p-2 text-green-600">1%</td>
+            </tr>
+            <tr>
+              <td class="p-2">Surf Excel</td>
+              <td class="p-2">23567</td>
+              <td class="p-2">Household</td>
+              <td class="p-2">125 Packet</td>
+              <td class="p-2">₹6,000</td>
+              <td class="p-2 text-green-600">1%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart Script -->
+  <script>
+    const ctx = document.getElementById('reportChart');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'],
+        datasets: [
+          {
+            label: 'Revenue',
+            data: [20000, 25000, 45000, 60000, 50000, 58000, 45000],
+            borderColor: '#2563eb',
+            backgroundColor: 'rgba(37,99,235,0.1)',
+            fill: false,
+            tension: 0.4
+          },
+          {
+            label: 'Profit',
+            data: [15000, 20000, 35000, 40000, 36000, 45000, 38000],
+            borderColor: 'orange',
+            backgroundColor: 'rgba(251,191,36,0.1)',
+            fill: false,
+            tension: 0.4
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: {
+              font: { size: 14 }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

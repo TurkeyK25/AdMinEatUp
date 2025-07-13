@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Suppliers - Kanban</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex bg-gray-100 min-h-screen overflow-hidden">
+  <!-- Sidebar -->
+  <div id="sidebar" class="h-screen overflow-hidden"></div>
+  <script>
+    fetch('../menu/Sidebar.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('sidebar').innerHTML = html;
+
+        const currentPage = window.location.pathname.split("/").pop();
+        const links = document.querySelectorAll(".nav-link");
+        links.forEach(link => {
+          if (link.getAttribute("data-page") === currentPage) {
+            link.classList.add("text-blue-600", "font-semibold");
+          } else {
+            link.classList.remove("text-blue-600", "font-semibold");
+          }
+        });
+      });
+  </script>
+
+  <!-- Main Content -->
+  <div class="flex-1 p-8 overflow-y-auto">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <input type="text" placeholder="Search product, supplier, order" class="px-4 py-2 border rounded w-96" />
+      <img src="https://via.placeholder.com/32" alt="avatar" class="w-8 h-8 rounded-full" />
+    </div>
+
+    <div class="bg-white rounded shadow p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold">Suppliers</h3>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('overlay').classList.remove('hidden')">Add Supplier</button>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left text-sm">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="p-2">Supplier Name</th>
+              <th class="p-2">Product</th>
+              <th class="p-2">Contact Number</th>
+              <th class="p-2">Email</th>
+              <th class="p-2">Type</th>
+              <th class="p-2">On the way</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="p-2">Richard Martin</td>
+              <td class="p-2">Kit Kat</td>
+              <td class="p-2">798745568</td>
+              <td class="p-2">richard@gmail.com</td>
+              <td class="p-2"><span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Taking Return</span></td>
+              <td class="p-2">13</td>
+            </tr>
+            <tr>
+              <td class="p-2">Tom Homan</td>
+              <td class="p-2">Mazza</td>
+              <td class="p-2">9876543568</td>
+              <td class="p-2">tomhoman@gmail.com</td>
+              <td class="p-2"><span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Taking Return</span></td>
+              <td class="p-2">-</td>
+            </tr>
+            <tr>
+              <td class="p-2">Veandr</td>
+              <td class="p-2">Daily Milk</td>
+              <td class="p-2">9876543568</td>
+              <td class="p-2">veandr@gmail.com</td>
+              <td class="p-2"><span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs">Not Taking Return</span></td>
+              <td class="p-2">12</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Add Supplier -->
+  <div id="overlay" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg w-full max-w-md p-6">
+      <h3 class="text-lg font-semibold mb-4">New Supplier</h3>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-sm mb-1">Supplier Name</label>
+          <input type="text" class="w-full border p-2 rounded" placeholder="Enter supplier name" />
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Product</label>
+          <input type="text" class="w-full border p-2 rounded" placeholder="Enter product" />
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Category</label>
+          <input type="text" class="w-full border p-2 rounded" placeholder="Select product category" />
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Buying Price</label>
+          <input type="text" class="w-full border p-2 rounded" placeholder="Enter buying price" />
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Contact Number</label>
+          <input type="text" class="w-full border p-2 rounded" placeholder="Enter supplier contact number" />
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Type</label>
+          <div class="flex gap-2">
+            <span class="px-3 py-1 rounded bg-blue-100 text-blue-700 text-xs cursor-pointer active" onclick="selectType(this)">Taking return</span>
+            <span class="px-3 py-1 rounded bg-gray-100 text-gray-700 text-xs cursor-pointer" onclick="selectType(this)">Not taking return</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 mt-6">
+        <button class="px-4 py-2 border rounded text-sm" onclick="document.getElementById('overlay').classList.add('hidden')">Discard</button>
+        <button class="px-4 py-2 bg-blue-600 text-white rounded text-sm">Add Supplier</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function selectType(el) {
+      document.querySelectorAll('#overlay .flex.gap-2 span').forEach(s => {
+        s.classList.remove('bg-blue-100', 'text-blue-700');
+        s.classList.add('bg-gray-100', 'text-gray-700');
+      });
+      el.classList.remove('bg-gray-100', 'text-gray-700');
+      el.classList.add('bg-blue-100', 'text-blue-700');
+    }
+  </script>
+</body>
+</html>

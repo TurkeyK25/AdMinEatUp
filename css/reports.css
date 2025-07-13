@@ -1,0 +1,34 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f8f9fc;
+  overflow: hidden;
+}
+
+.sidebar {
+  min-width: 240px;
+  height: 100vh;
+  overflow-y: auto;
+  background: #fff;
+  border-right: 1px solid #ddd;
+}
+
+.content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.increase {
+  color: green;
+  font-weight: bold;
+}
+
+canvas {
+  max-height: 250px;
+}
+
+.nav-link.active {
+  color: #007bff !important;
+  font-weight: bold;
+}

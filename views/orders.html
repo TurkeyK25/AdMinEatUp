@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Orders - Kanban Inventory</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex bg-gray-100 min-h-screen overflow-hidden">
+  <!-- Sidebar -->
+  <div id="sidebar" class="h-screen overflow-hidden"></div>
+  <script>
+    fetch('../menu/Sidebar.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('sidebar').innerHTML = html;
+
+        const currentPage = window.location.pathname.split("/").pop();
+        const links = document.querySelectorAll(".nav-link");
+
+        links.forEach(link => {
+          if (link.getAttribute("data-page") === currentPage) {
+            link.classList.add("text-blue-600", "font-semibold");
+          } else {
+            link.classList.remove("text-blue-600", "font-semibold");
+          }
+        });
+      });
+  </script>
+
+  <!-- Main Content -->
+  <div class="flex-1 p-8 overflow-y-auto">
+    <div class="flex justify-between items-center mb-6">
+      <input type="text" placeholder="Search product, supplier, order" class="px-4 py-2 border rounded w-96" />
+      <div class="text-xl">👤</div>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-white p-4 rounded shadow">
+        <strong>Total Orders</strong><br>37
+      </div>
+      <div class="bg-white p-4 rounded shadow">
+        <strong>Total Received</strong><br>₹25000
+      </div>
+      <div class="bg-white p-4 rounded shadow">
+        <strong>Total Returned</strong><br>₹2500
+      </div>
+      <div class="bg-white p-4 rounded shadow">
+        <strong>On the way</strong><br>12
+      </div>
+    </div>
+
+    <div class="bg-white rounded shadow p-4">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold">Orders</h3>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="togglePopup()">Add Product</button>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="py-2 px-4">Products</th>
+              <th class="py-2 px-4">Order Value</th>
+              <th class="py-2 px-4">Quantity</th>
+              <th class="py-2 px-4">Order ID</th>
+              <th class="py-2 px-4">Expected Delivery</th>
+              <th class="py-2 px-4">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-t">
+              <td class="py-2 px-4">Maggi</td><td>₹4300</td><td>43 Packets</td><td>7535</td><td>11/12/22</td><td class="text-red-600">Delayed</td>
+            </tr>
+            <tr class="border-t">
+              <td class="py-2 px-4">Bourn Vita</td><td>₹502</td><td>14 Packets</td><td>2275</td><td>8/1/22</td><td class="text-yellow-600">Out for delivery</td>
+            </tr>
+            <tr class="border-t">
+              <td class="py-2 px-4">Horlicks</td><td>₹370</td><td>5 Packets</td><td>2427</td><td>9/1/23</td><td class="text-pink-600">Returned</td>
+            </tr>
+            <tr class="border-t">
+              <td class="py-2 px-4">Ariel</td><td>₹4078</td><td>23 Packets</td><td>2757</td><td>15/12/23</td><td class="text-red-600">Delayed</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup Add Product -->
+  <div class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center" id="orderPopup">
+    <div class="bg-white p-6 rounded shadow w-96">
+      <h3 class="text-lg font-semibold mb-4">New Order</h3>
+
+      <label class="text-sm">Product Name</label>
+      <input type="text" class="w-full border p-2 rounded mb-3" placeholder="Enter product name"/>
+
+      <label class="text-sm">Product ID</label>
+      <input type="text" class="w-full border p-2 rounded mb-3" placeholder="Enter product ID"/>
+
+      <label class="text-sm">Category</label>
+      <select class="w-full border p-2 rounded mb-3">
+        <option>Select product category</option>
+        <option>Food</option>
+        <option>Drink</option>
+      </select>
+
+      <label class="text-sm">Order value</label>
+      <input type="text" class="w-full border p-2 rounded mb-3" placeholder="Enter order value"/>
+
+      <label class="text-sm">Quantity</label>
+      <input type="text" class="w-full border p-2 rounded mb-3" placeholder="Enter product quantity"/>
+
+      <label class="text-sm">Unit</label>
+      <input type="text" class="w-full border p-2 rounded mb-3" placeholder="Enter product unit"/>
+
+      <label class="text-sm">Buying price</label>
+      <input type="text" class="w-full border p-2 rounded mb-3" placeholder="Enter buying price"/>
+
+      <label class="text-sm">Date of delivery</label>
+      <input type="date" class="w-full border p-2 rounded mb-3"/>
+
+      <div class="flex items-center gap-2 mb-4">
+        <input type="checkbox" id="notify" />
+        <label for="notify" class="text-sm">Notify on the date of delivery</label>
+      </div>
+
+      <div class="flex justify-end gap-2">
+        <button class="px-4 py-1 border rounded" onclick="togglePopup()">Discard</button>
+        <button class="px-4 py-1 bg-blue-600 text-white rounded">Add Product</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePopup() {
+      const popup = document.getElementById('orderPopup');
+      popup.classList.toggle('hidden');
+      popup.classList.toggle('flex');
+    }
+  </script>
+</body>
+</html>
