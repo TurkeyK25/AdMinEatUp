@@ -1,34 +1,66 @@
 const express = require('express');
-const path = require('path');
 const mongoose = require('mongoose');
-const { ProductModel } = require('./eatUpModel'); // dùng đúng model bạn đã có
-const COMMON = require('./COMMON');
+const cors = require('cors');
+const jwt = require('jsonwebtoken');
+
+const {UserModel} = require('./EatUpModel');
 
 const app = express();
-const port = 8080; // có thể dùng cổng khác backend mobile nếu cần
+const PORT = 5000;
+const JWT_SECRET = 'eatup_secret_key';
 
-// Để server đọc được file tĩnh như CSS, JS
-app.use(express.static(path.join(__dirname, 'public')));
+// Middleware
+app.use(cors());
+app.use(express.json());
 
-// Route hiển thị HTML dashboard
-app.get('/admin/dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'Dashboard.html'));
+// Kết nối MongoDB Atlas
+mongoose.connect('mongodb+srv://EatUp:w7XCJ4kCaLRUsBwD@cluster0.0wmav.mongodb.net/EatUp')
+  .then(() => console.log('✅ Đã kết nối MongoDB'))
+  .catch(err => console.error('❌ Lỗi MongoDB:', err));
+
+// Login API
+app.post('/api/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password)
+      return res.status(400).json({ message: 'Thiếu email hoặc mật khẩu' });
+
+    const user = await UserModel.findOne({ email });
+    if (!user)
+      return res.status(404).json({ message: 'Email không tồn tại' });
+
+    // So sánh password đơn giản
+    if (password !== user.password_hash)
+      return res.status(401).json({ message: 'Sai mật khẩu' });
+
+    const token = jwt.sign(
+      { userId: user._id, role: user.role },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.json({
+      message: 'Đăng nhập thành công',
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        avatar_url: user.avatar_url,
+        gender: user.gender
+      }
+    });
+
+  } catch (err) {
+    console.error('❌ Lỗi đăng nhập:', err);
+    res.status(500).json({ message: 'Lỗi server' });
+  }
 });
 
-// Route trả dữ liệu sản phẩm
-app.get('/admin/api/products', async (req, res) => {
-    await mongoose.connect(COMMON.uri);
-    const products = await ProductModel.find();
-    res.json(products.map(p => ({
-        name: p.name,
-        price: p.price,
-        quantity: p.stock || p.quantity || 0,
-        category: p.category || "Uncategorized",
-        status: p.status,
-        createdAt: p.createdAt
-    })));
-});
-
-app.listen(port, () => {
-    console.log(`Admin dashboard chạy tại http://localhost:${port}/admin/dashboard`);
+// Khởi động server
+app.listen(PORT, () => {
+  console.log(`🚀 Server đang chạy tại http://localhost:${PORT}`);
 });

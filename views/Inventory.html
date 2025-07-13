@@ -6,87 +6,89 @@
   <title>Inventory System</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100">
-  <div class="flex min-h-screen">
-    <!-- Sidebar -->
-    <aside class="w-64 bg-white shadow-md p-6">
-      <h1 class="text-2xl font-bold text-blue-600 mb-8">KANBAN</h1>
-      <nav class="space-y-4">
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Dashboard</a>
-        <a href="#" class="block text-blue-600 font-semibold">Inventory</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Reports</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Suppliers</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Orders</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Manage Store</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Settings</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Log Out</a>
-      </nav>
-    </aside>
+<body class="flex bg-gray-100 min-h-screen overflow-hidden">
+  <!-- Sidebar -->
+  <div id="sidebar" class="h-screen overflow-hidden"></div>
+  <script>
+    fetch('../menu/Sidebar.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('sidebar').innerHTML = html;
+        const currentPage = window.location.pathname.split("/").pop();
+        const links = document.querySelectorAll(".nav-link");
+        links.forEach(link => {
+          if (link.getAttribute("data-page") === currentPage) {
+            link.classList.add("text-blue-600", "font-semibold");
+          } else {
+            link.classList.remove("text-blue-600", "font-semibold");
+          }
+        });
+      });
+  </script>
+  <!-- Main Content -->
+  <div class="flex-1 p-8 overflow-y-auto">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <input type="text" placeholder="Search product, supplier, order" class="px-4 py-2 border rounded w-96" />
+      <img src="https://via.placeholder.com/32" alt="User" class="w-8 h-8 rounded-full" />
+    </div>
 
-    <!-- Main -->
-    <main class="flex-1 p-8">
-      <!-- Header -->
-      <div class="flex justify-between items-center mb-6">
-        <input type="text" placeholder="Search product, supplier, order" class="px-4 py-2 border rounded w-96" />
-        <img src="https://via.placeholder.com/32" alt="User" class="w-8 h-8 rounded-full" />
+    <!-- Inventory Summary -->
+    <div class="grid grid-cols-4 gap-4 mb-6">
+      <div class="bg-white shadow rounded p-4">
+        <h3 class="text-sm font-semibold text-gray-500">Categories</h3>
+        <p class="text-2xl font-bold">14</p>
+        <p class="text-xs text-gray-400">Last 7 days</p>
       </div>
-
-      <!-- Inventory Summary -->
-      <div class="grid grid-cols-4 gap-4 mb-6">
-        <div class="bg-white shadow rounded p-4">
-          <h3 class="text-sm font-semibold text-gray-500">Categories</h3>
-          <p class="text-2xl font-bold">14</p>
-          <p class="text-xs text-gray-400">Last 7 days</p>
-        </div>
-        <div class="bg-white shadow rounded p-4">
-          <h3 class="text-sm font-semibold text-gray-500">Total Products</h3>
-          <p class="text-2xl font-bold">868</p>
-          <p class="text-xs text-gray-400">₹25000 Revenue</p>
-        </div>
-        <div class="bg-white shadow rounded p-4">
-          <h3 class="text-sm font-semibold text-gray-500">Top Selling</h3>
-          <p class="text-2xl font-bold">5</p>
-          <p class="text-xs text-gray-400">₹2500 Cost</p>
-        </div>
-        <div class="bg-white shadow rounded p-4">
-          <h3 class="text-sm font-semibold text-gray-500">Low Stocks</h3>
-          <p class="text-2xl font-bold">12</p>
-          <p class="text-xs text-gray-400">Not in stock: 2</p>
-        </div>
+      <div class="bg-white shadow rounded p-4">
+        <h3 class="text-sm font-semibold text-gray-500">Total Products</h3>
+        <p class="text-2xl font-bold">868</p>
+        <p class="text-xs text-gray-400">₹25000 Revenue</p>
       </div>
-
-      <!-- Products Table -->
-      <div class="bg-white shadow rounded p-6">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-bold">Products</h2>
-          <button onclick="document.getElementById('productModal').classList.remove('hidden')" class="bg-blue-600 text-white px-4 py-2 rounded">Add Product</button>
-        </div>
-        <table class="w-full text-left text-sm">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="p-2">Products</th>
-              <th class="p-2">Buying Price</th>
-              <th class="p-2">Quantity</th>
-              <th class="p-2">Threshold</th>
-              <th class="p-2">Expiry</th>
-              <th class="p-2">Availability</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="hover:bg-gray-50 cursor-pointer" onclick="document.getElementById('productDetail').classList.remove('hidden')">
-              <td class="p-2">Maggi</td>
-              <td class="p-2">₹430</td>
-              <td class="p-2">43 Packets</td>
-              <td class="p-2">12 Packets</td>
-              <td class="p-2">11/12/22</td>
-              <td class="p-2 text-green-600">In stock</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="bg-white shadow rounded p-4">
+        <h3 class="text-sm font-semibold text-gray-500">Top Selling</h3>
+        <p class="text-2xl font-bold">5</p>
+        <p class="text-xs text-gray-400">₹2500 Cost</p>
       </div>
+      <div class="bg-white shadow rounded p-4">
+        <h3 class="text-sm font-semibold text-gray-500">Low Stocks</h3>
+        <p class="text-2xl font-bold">12</p>
+        <p class="text-xs text-gray-400">Not in stock: 2</p>
+      </div>
+    </div>
 
-      <!-- Modal Add Product -->
-      <!-- Modal Add Product -->
+    <!-- Products Table -->
+    <div class="bg-white shadow rounded p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">Products</h2>
+        <button onclick="document.getElementById('productModal').classList.remove('hidden')" class="bg-blue-600 text-white px-4 py-2 rounded">Add Product</button>
+      </div>
+      <table class="w-full text-left text-sm">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="p-2">Products</th>
+            <th class="p-2">Buying Price</th>
+            <th class="p-2">Quantity</th>
+            <th class="p-2">Threshold</th>
+            <th class="p-2">Expiry</th>
+            <th class="p-2">Availability</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="hover:bg-gray-50 cursor-pointer" onclick="document.getElementById('productDetail').classList.remove('hidden')">
+            <td class="p-2">Maggi</td>
+            <td class="p-2">₹430</td>
+            <td class="p-2">43 Packets</td>
+            <td class="p-2">12 Packets</td>
+            <td class="p-2">11/12/22</td>
+            <td class="p-2 text-green-600">In stock</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modal Add Product -->
+    <!-- Modal Add Product -->
 <div id="productModal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
   <div class="bg-white rounded-lg w-full max-w-xl p-6">
     <h3 class="text-lg font-semibold mb-4">New Product</h3>
@@ -122,87 +124,86 @@
 </div>
 
 
-      <!-- Product Detail View -->
-      <div id="productDetail" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-lg max-w-4xl w-full max-h-screen overflow-y-auto">
-          <div class="flex justify-between mb-4">
-            <h2 class="text-xl font-bold">Product: Maggi</h2>
-            <button onclick="document.getElementById('productDetail').classList.add('hidden')">✖</button>
-          </div>
+    <!-- Product Detail View -->
+    <div id="productDetail" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+      <div class="bg-white p-6 rounded-lg max-w-4xl w-full max-h-screen overflow-y-auto">
+        <div class="flex justify-between mb-4">
+          <h2 class="text-xl font-bold">Product: Maggi</h2>
+          <button onclick="document.getElementById('productDetail').classList.add('hidden')">✖</button>
+        </div>
 
-          <div class="border-b mb-4">
-            <ul class="flex space-x-6 text-sm text-gray-600">
-              <li class="border-b-2 border-blue-600 pb-2 font-semibold text-blue-600">Overview</li>
-              <li class="pb-2">Purchases</li>
-              <li class="pb-2">Adjustments</li>
-              <li class="pb-2">History</li>
-            </ul>
-          </div>
+        <div class="border-b mb-4">
+          <ul class="flex space-x-6 text-sm text-gray-600">
+            <li class="border-b-2 border-blue-600 pb-2 font-semibold text-blue-600">Overview</li>
+            <li class="pb-2">Purchases</li>
+            <li class="pb-2">Adjustments</li>
+            <li class="pb-2">History</li>
+          </ul>
+        </div>
 
-          <div class="grid grid-cols-3 gap-6">
-            <!-- Info Column -->
-            <div class="col-span-2 space-y-6">
-              <div>
-                <h3 class="font-semibold mb-2">Primary Details</h3>
-                <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
-                  <p><strong>Product name:</strong> Maggi</p>
-                  <p><strong>Product ID:</strong> 456567</p>
-                  <p><strong>Product category:</strong> Instant food</p>
-                  <p><strong>Expiry Date:</strong> 13/4/23</p>
-                  <p><strong>Threshold Value:</strong> 12</p>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-semibold mb-2">Supplier Details</h3>
-                <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
-                  <p><strong>Supplier name:</strong> Ronald Martin</p>
-                  <p><strong>Contact Number:</strong> 987789 86757</p>
-                </div>
-              </div>
-              <div>
-                <h3 class="font-semibold mb-2">Stock Locations</h3>
-                <table class="w-full text-sm text-left">
-                  <thead class="bg-gray-100">
-                    <tr>
-                      <th class="p-2">Store Name</th>
-                      <th class="p-2">Stock in hand</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="p-2">Sukur Branch</td>
-                      <td class="p-2 text-blue-600">15</td>
-                    </tr>
-                    <tr>
-                      <td class="p-2">Singanallur Branch</td>
-                      <td class="p-2 text-blue-600">19</td>
-                    </tr>
-                  </tbody>
-                </table>
+        <div class="grid grid-cols-3 gap-6">
+          <!-- Info Column -->
+          <div class="col-span-2 space-y-6">
+            <div>
+              <h3 class="font-semibold mb-2">Primary Details</h3>
+              <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
+                <p><strong>Product name:</strong> Maggi</p>
+                <p><strong>Product ID:</strong> 456567</p>
+                <p><strong>Product category:</strong> Instant food</p>
+                <p><strong>Expiry Date:</strong> 13/4/23</p>
+                <p><strong>Threshold Value:</strong> 12</p>
               </div>
             </div>
+            <div>
+              <h3 class="font-semibold mb-2">Supplier Details</h3>
+              <div class="grid grid-cols-2 gap-4 text-sm text-gray-700">
+                <p><strong>Supplier name:</strong> Ronald Martin</p>
+                <p><strong>Contact Number:</strong> 987789 86757</p>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-semibold mb-2">Stock Locations</h3>
+              <table class="w-full text-sm text-left">
+                <thead class="bg-gray-100">
+                  <tr>
+                    <th class="p-2">Store Name</th>
+                    <th class="p-2">Stock in hand</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="p-2">Sukur Branch</td>
+                    <td class="p-2 text-blue-600">15</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2">Singanallur Branch</td>
+                    <td class="p-2 text-blue-600">19</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-            <!-- Image & Summary -->
-            <div class="space-y-4">
-              <div class="border rounded p-4 flex justify-center">
-                <img src="https://via.placeholder.com/100" alt="Maggi" class="w-24 h-24 object-contain" />
-              </div>
-              <div class="text-sm text-gray-700 space-y-2">
-                <p><strong>Opening Stock:</strong> 40</p>
-                <p><strong>Remaining Stock:</strong> 34</p>
-                <p><strong>On the way:</strong> 15</p>
-                <p><strong>Threshold value:</strong> 12</p>
-              </div>
-              <div class="flex space-x-2">
-                <button class="px-4 py-2 border rounded">Edit</button>
-                <button class="px-4 py-2 border rounded">Download</button>
-              </div>
+          <!-- Image & Summary -->
+          <div class="space-y-4">
+            <div class="border rounded p-4 flex justify-center">
+              <img src="https://via.placeholder.com/100" alt="Maggi" class="w-24 h-24 object-contain" />
+            </div>
+            <div class="text-sm text-gray-700 space-y-2">
+              <p><strong>Opening Stock:</strong> 40</p>
+              <p><strong>Remaining Stock:</strong> 34</p>
+              <p><strong>On the way:</strong> 15</p>
+              <p><strong>Threshold value:</strong> 12</p>
+            </div>
+            <div class="flex space-x-2">
+              <button class="px-4 py-2 border rounded">Edit</button>
+              <button class="px-4 py-2 border rounded">Download</button>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-    </main>
   </div>
 </body>
 </html>

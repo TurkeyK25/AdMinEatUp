@@ -1,36 +1,193 @@
-<!-- views/login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Kanban Admin Login</title>
-  <link rel="stylesheet" href="/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff;
+      display: flex;
+      height: 100vh;
+    }
+    .left, .right {
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .left {
+      background-color: #eaf7ff;
+      flex-direction: column;
+    }
+    .left img {
+      width: 150px;
+    }
+    .left h1 {
+      color: #0090e7;
+    }
+    .right {
+      flex-direction: column;
+    }
+    form {
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    h2 {
+      margin-bottom: 5px;
+    }
+    input[type="email"],
+    input[type="password"] {
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+    .options input {
+      margin-right: 5px;
+    }
+    .google-btn {
+      background-color: white;
+      border: 1px solid #ccc;
+      color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .google-btn img {
+      width: 20px;
+    }
+    .bottom-text {
+      text-align: center;
+      font-size: 14px;
+    }
+    .bottom-text a {
+      color: #007bff;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-  <div class="login-container">
-    <div class="left-panel">
-      <img src="/img/Logodelete.png" alt="Logo" class="logo" />
-    </div>
-    <div class="right-panel">
-      <div class="login-box">
-        <img src="/img/Logodelete.png" class="small-logo" />
-        <h2>Log in to your account</h2>
-        <p>Welcome back! Please enter your details.</p>
-        <form id="loginForm">
-          <input type="email" id="email" placeholder="Enter your email" required />
-          <input type="password" id="password" placeholder="Password" required />
-          <div class="options">
-            <label><input type="checkbox" /> Remember for 30 days</label>
-            <a href="#">Forgot password</a>
-          </div>
-          <button type="submit">Sign in</button>
-          <button type="button" class="google-btn">Sign in with Google</button>
-        </form>
-        <p>Don't have an account? <a href="Signup.html">Sign up</a></p>
-        <div id="message" class="message"></div>
-      </div>
-    </div>
+
+  <div class="left">
+    <img src="https://cdn-icons-png.flaticon.com/512/3048/3048394.png" />
+    <h1>KANBAN</h1>
   </div>
-  <script src="/script.js"></script>
+
+  <div class="right">
+    <form id="loginForm">
+      <img src="https://cdn-icons-png.flaticon.com/512/3048/3048394.png" width="40" style="align-self: center;" />
+      <h2>Log in to your account</h2>
+      <p>Welcome back! Please enter your details.</p>
+      
+      <input type="email" id="email" placeholder="Enter your email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      
+      <div class="options">
+        <label><input type="checkbox" id="remember" /> Ghi nhớ đăng nhập</label>
+        <a href="#">Quên mật khẩu?</a>
+      </div>
+      
+      <button type="submit">Đăng nhập</button>
+
+      <button type="button" class="google-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/768px-Google_%22G%22_Logo.svg.png" />
+        Đăng nhập bằng Google
+      </button>
+
+      <div class="bottom-text">
+        Chưa có tài khoản? <a href="#">Đăng ký</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Khi mở trang => tự động điền thông tin nếu đã ghi nhớ
+    document.addEventListener('DOMContentLoaded', () => {
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const rememberCheckbox = document.getElementById('remember');
+
+      const savedEmail = localStorage.getItem('savedEmail');
+      const savedPassword = localStorage.getItem('savedPassword');
+
+      if (savedEmail && savedPassword) {
+        emailInput.value = savedEmail;
+        passwordInput.value = savedPassword;
+        rememberCheckbox.checked = true;
+      }
+    });
+
+    // Xử lý đăng nhập
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const remember = document.getElementById('remember').checked;
+
+      try {
+        const res = await fetch('http://192.168.1.4:5000/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert(data.message || 'Đăng nhập thất bại');
+          return;
+        }
+
+        alert('✅ Đăng nhập thành công');
+
+        // Ghi nhớ thông tin nếu được chọn
+        if (remember) {
+          localStorage.setItem('savedEmail', email);
+          localStorage.setItem('savedPassword', password);
+        } else {
+          localStorage.removeItem('savedEmail');
+          localStorage.removeItem('savedPassword');
+        }
+
+        localStorage.setItem('token', data.token);
+
+        // Chuyển sang trang dashboard
+        window.location.href = 'dashboard.html';
+
+      } catch (error) {
+        console.error('Lỗi:', error);
+        alert('⚠️ Không thể kết nối tới server');
+      }
+    });
+  </script>
+
 </body>
 </html>

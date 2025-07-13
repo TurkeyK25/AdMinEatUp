@@ -2,120 +2,140 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inventory Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EatUp Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    function toggleForm() {
-      const form = document.getElementById('productForm');
-      form.classList.toggle('hidden');
-    }
-  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body class="bg-gray-100">
-  <div class="flex min-h-screen">
-    <!-- Sidebar -->
-    <aside class="w-64 bg-white shadow-md p-6">
-      <h1 class="text-2xl font-bold text-blue-600 mb-8">KANBAN</h1>
-      <nav class="space-y-4">
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Dashboard</a>
-        <a href="#" class="block text-blue-600 font-semibold">Inventory</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Reports</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Suppliers</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Orders</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Manage Store</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Settings</a>
-        <a href="#" class="block text-gray-700 hover:text-blue-600">Log Out</a>
-      </nav>
-    </aside>
+<body class="flex bg-gray-100 min-h-screen overflow-hidden">
+  <!-- Sidebar -->
+  <div id="sidebar" class="h-screen overflow-hidden"></div>
+  <script>
+    fetch('../menu/Sidebar.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('sidebar').innerHTML = html;
+        const currentPage = window.location.pathname.split("/").pop();
+        const links = document.querySelectorAll(".nav-link");
+        links.forEach(link => {
+          if (link.getAttribute("data-page") === currentPage) {
+            link.classList.add("text-blue-600", "font-semibold");
+          } else {
+            link.classList.remove("text-blue-600", "font-semibold");
+          }
+        });
+      });
+  </script>
 
-    <!-- Main Content -->
-    <main class="flex-1 p-6 relative">
-      <!-- Search Bar -->
-      <div class="flex justify-between items-center mb-6">
-        <input
-          type="text"
-          placeholder="Search product, supplier, order"
-          class="w-full max-w-lg px-4 py-2 border rounded"
-        />
-        <img src="https://via.placeholder.com/32" alt="User" class="w-8 h-8 rounded-full ml-4" />
-      </div>
+  <!-- Main Content -->
+  <div class="flex-1 p-8 overflow-y-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold text-blue-600">Dashboard</h2>
+      <img src="https://via.placeholder.com/32" alt="avatar" class="w-8 h-8 rounded-full" />
+    </div>
 
-      <!-- Inventory Overview -->
-      <div class="grid grid-cols-4 gap-4 mb-6">
-        <div class="bg-white p-4 rounded shadow">
-          <p class="text-sm text-gray-500">Categories</p>
-          <p class="text-lg font-bold">14</p>
-          <p class="text-xs text-gray-400">Last 7 days</p>
-        </div>
-        <div class="bg-white p-4 rounded shadow">
-          <p class="text-sm text-gray-500">Total Products</p>
-          <p class="text-lg font-bold">868</p>
-          <p class="text-xs text-gray-400">₹25000 Revenue</p>
-        </div>
-        <div class="bg-white p-4 rounded shadow">
-          <p class="text-sm text-gray-500">Top Selling</p>
-          <p class="text-lg font-bold">5</p>
-          <p class="text-xs text-gray-400">₹2500 Cost</p>
-        </div>
-        <div class="bg-white p-4 rounded shadow">
-          <p class="text-sm text-gray-500">Low Stocks</p>
-          <p class="text-lg font-bold text-red-500">12</p>
-          <p class="text-xs text-gray-400">2 Not in stock</p>
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-users text-blue-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">15</div>
+          <div class="text-gray-500 text-sm">Người dùng</div>
         </div>
       </div>
-
-      <!-- Products Table Header -->
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-semibold">Products</h2>
-        <button onclick="toggleForm()" class="bg-blue-600 text-white px-4 py-2 rounded">Add Product</button>
-      </div>
-
-      <!-- Add Product Form -->
-      <div id="productForm" class="absolute top-24 left-1/2 transform -translate-x-1/2 bg-white p-6 rounded shadow-lg w-[400px] hidden z-10">
-        <h3 class="text-lg font-bold mb-4">New Product</h3>
-        <input type="text" placeholder="Product Name" class="w-full mb-3 px-3 py-2 border rounded" />
-        <input type="text" placeholder="Product ID" class="w-full mb-3 px-3 py-2 border rounded" />
-        <input type="text" placeholder="Category" class="w-full mb-3 px-3 py-2 border rounded" />
-        <input type="text" placeholder="Buying Price" class="w-full mb-3 px-3 py-2 border rounded" />
-        <input type="text" placeholder="Quantity" class="w-full mb-3 px-3 py-2 border rounded" />
-        <input type="text" placeholder="Unit" class="w-full mb-3 px-3 py-2 border rounded" />
-        <input type="date" placeholder="Expiry Date" class="w-full mb-3 px-3 py-2 border rounded" />
-        <input type="text" placeholder="Threshold Value" class="w-full mb-4 px-3 py-2 border rounded" />
-        <div class="flex justify-end gap-2">
-          <button onclick="toggleForm()" class="px-4 py-2 bg-gray-300 rounded">Discard</button>
-          <button class="px-4 py-2 bg-blue-600 text-white rounded">Add Product</button>
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-receipt text-green-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">20</div>
+          <div class="text-gray-500 text-sm">Đơn hàng</div>
         </div>
       </div>
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-hamburger text-yellow-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">50</div>
+          <div class="text-gray-500 text-sm">Món ăn</div>
+        </div>
+      </div>
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-heart text-pink-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">30</div>
+          <div class="text-gray-500 text-sm">Yêu thích</div>
+        </div>
+      </div>
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-comment-dots text-indigo-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">18</div>
+          <div class="text-gray-500 text-sm">Đánh giá</div>
+        </div>
+      </div>
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-tag text-orange-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">10</div>
+          <div class="text-gray-500 text-sm">Voucher</div>
+        </div>
+      </div>
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-folder text-gray-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">8</div>
+          <div class="text-gray-500 text-sm">Danh mục</div>
+        </div>
+      </div>
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-map-marker-alt text-red-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">12</div>
+          <div class="text-gray-500 text-sm">Địa chỉ</div>
+        </div>
+      </div>
+    </div>
 
-      <!-- Products Table -->
-      <div class="bg-white rounded shadow overflow-x-auto">
-        <table class="w-full text-sm text-left">
+    <!-- Recent Activity -->
+    <div class="bg-white rounded shadow p-6">
+      <h3 class="text-lg font-semibold mb-4">Hoạt động gần đây</h3>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left text-sm">
           <thead class="bg-gray-100">
             <tr>
-              <th class="p-3">Products</th>
-              <th class="p-3">Buying Price</th>
-              <th class="p-3">Quantity</th>
-              <th class="p-3">Threshold Value</th>
-              <th class="p-3">Expiry Date</th>
-              <th class="p-3">Availability</th>
+              <th class="p-2">Thời gian</th>
+              <th class="p-2">Hoạt động</th>
+              <th class="p-2">Người dùng</th>
+              <th class="p-2">Trạng thái</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="border-t">
-              <td class="p-3">MaggI</td>
-              <td class="p-3">₹430</td>
-              <td class="p-3">43 Packets</td>
-              <td class="p-3">12 Packets</td>
-              <td class="p-3">1/12/22</td>
-              <td class="p-3 text-green-600">In stock</td>
+            <tr>
+              <td class="p-2">9/7/2025, 10:20 PM</td>
+              <td class="p-2">Thêm địa chỉ mới</td>
+              <td class="p-2">hai123</td>
+              <td class="p-2"><span class="px-2 py-1 rounded bg-green-100 text-green-700 text-xs">Thành công</span></td>
             </tr>
-            <!-- More rows can go here -->
+            <tr>
+              <td class="p-2">9/7/2025, 9:10 PM</td>
+              <td class="p-2">Thêm món ăn</td>
+              <td class="p-2">eatup_admin</td>
+              <td class="p-2"><span class="px-2 py-1 rounded bg-blue-100 text-blue-700 text-xs">Thông tin</span></td>
+            </tr>
+            <tr>
+              <td class="p-2">8/7/2025, 5:00 PM</td>
+              <td class="p-2">Gửi đánh giá</td>
+              <td class="p-2">user_a</td>
+              <td class="p-2"><span class="px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-xs">Chờ duyệt</span></td>
+            </tr>
+            <tr>
+              <td class="p-2">6/7/2025, 11:45 AM</td>
+              <td class="p-2">Yêu thích món ăn</td>
+              <td class="p-2">foodie_01</td>
+              <td class="p-2"><span class="px-2 py-1 rounded bg-green-100 text-green-700 text-xs">Thành công</span></td>
+            </tr>
           </tbody>
         </table>
-        <div class="p-3 text-right text-sm text-gray-500">Page 1 of 10</div>
       </div>
-    </main>
+    </div>
   </div>
 </body>
 </html>
