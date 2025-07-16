@@ -1,0 +1,100 @@
+/* voucher.css */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f6f8;
+}
+
+.sidebar {
+  position: fixed;
+  width: 220px;
+  height: 100vh;
+  background: #fff;
+  border-right: 1px solid #ddd;
+  padding: 20px 0;
+}
+
+.main {
+  margin-left: 240px;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header input {
+  padding: 8px 12px;
+  width: 320px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.table-container {
+  margin-top: 24px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.table-header h2 {
+  margin: 0;
+}
+
+button.add-btn {
+  padding: 8px 16px;
+  background-color: #3874ff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button.add-btn:hover {
+  background-color: #2c5fd0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+table thead {
+  background-color: #f0f0f0;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.badge.active {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.badge.expired {
+  background-color: #f8d7da;
+  color: #842029;
+}

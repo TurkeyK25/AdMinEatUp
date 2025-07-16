@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Settings - Admin</title>
+  <title>Admin Settings</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="flex bg-gray-100 min-h-screen overflow-hidden">
@@ -28,87 +28,113 @@
 
   <!-- Main Content -->
   <div class="flex-1 p-8 overflow-y-auto">
-    <!-- Header -->
     <div class="flex justify-between items-center mb-6">
-      <h2 class="text-2xl font-bold text-blue-600">Settings</h2>
+      <h2 class="text-2xl font-bold text-blue-600">Admin Settings</h2>
       <img src="https://via.placeholder.com/32" alt="avatar" class="w-8 h-8 rounded-full" />
     </div>
 
-    <!-- Account -->
-    <div class="bg-white rounded shadow p-6 mb-6 max-w-2xl">
-      <h3 class="text-lg font-semibold mb-4">Account</h3>
+    <!-- Account Settings -->
+    <div class="bg-white p-6 rounded shadow mb-6 max-w-3xl">
+      <h3 class="text-lg font-semibold mb-4">Account Settings</h3>
       <div class="space-y-4">
-        <div class="flex justify-between items-center">
-          <span>Profile Information</span>
-          <a href="#" class="text-blue-500">Edit</a>
+        <div class="flex justify-between">
+          <div>
+            <p class="font-medium">Admin Profile</p>
+            <p class="text-sm text-gray-500">Update name, role & photo</p>
+          </div>
+          <button class="text-blue-500 hover:underline">Edit</button>
         </div>
-        <div class="flex justify-between items-center">
-          <span>Email & Phone</span>
-          <a href="#" class="text-blue-500">Update</a>
+        <div class="flex justify-between">
+          <div>
+            <p class="font-medium">Email & Phone</p>
+            <p class="text-sm text-gray-500">Contact information for system alerts</p>
+          </div>
+          <button class="text-blue-500 hover:underline">Update</button>
         </div>
-        <div class="flex justify-between items-center">
-          <span>Change Password</span>
-          <a href="#" class="text-blue-500">Reset</a>
+        <div class="flex justify-between">
+          <div>
+            <p class="font-medium">Password</p>
+            <p class="text-sm text-gray-500">Change your current password</p>
+          </div>
+          <button class="text-blue-500 hover:underline">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security Settings -->
+    <div class="bg-white p-6 rounded shadow mb-6 max-w-3xl">
+      <h3 class="text-lg font-semibold mb-4">Security</h3>
+      <div class="space-y-4">
+        <div class="flex justify-between">
+          <div>
+            <p class="font-medium">2-Factor Authentication</p>
+            <p class="text-sm text-gray-500">Add extra security to your account</p>
+          </div>
+          <button class="text-blue-500 hover:underline">Enable</button>
+        </div>
+        <div class="flex justify-between">
+          <div>
+            <p class="font-medium">Admin Logs</p>
+            <p class="text-sm text-gray-500">Track all admin activities</p>
+          </div>
+          <button class="text-blue-500 hover:underline">View</button>
         </div>
       </div>
     </div>
 
     <!-- Notifications -->
-    <div class="bg-white rounded shadow p-6 mb-6 max-w-2xl">
+    <div class="bg-white p-6 rounded shadow mb-6 max-w-3xl">
       <h3 class="text-lg font-semibold mb-4">Notifications</h3>
       <div class="space-y-4">
         <div class="flex justify-between items-center">
-          <span>Receive order updates</span>
+          <div>
+            <p class="font-medium">Order Updates</p>
+            <p class="text-sm text-gray-500">Get notified when orders are placed</p>
+          </div>
           <input type="checkbox" checked class="w-5 h-5" />
         </div>
         <div class="flex justify-between items-center">
-          <span>Marketing offers</span>
+          <div>
+            <p class="font-medium">New Restaurant Requests</p>
+            <p class="text-sm text-gray-500">Alert when new restaurants sign up</p>
+          </div>
           <input type="checkbox" class="w-5 h-5" />
         </div>
       </div>
     </div>
 
-    <!-- Security -->
-    <div class="bg-white rounded shadow p-6 mb-6 max-w-2xl">
-      <h3 class="text-lg font-semibold mb-4">Security</h3>
-      <div class="space-y-4">
-        <div class="flex justify-between items-center">
-          <span>2-Factor Authentication</span>
-          <button class="text-blue-500">Enable</button>
-        </div>
-        <div class="flex justify-between items-center">
-          <span>Activity Logs</span>
-          <button class="text-blue-500">View</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Support -->
-    <div class="bg-white rounded shadow p-6 mb-6 max-w-2xl">
-      <h3 class="text-lg font-semibold mb-4">Support</h3>
-      <div class="space-y-2">
-        <a href="#" class="block text-blue-500">Help Center</a>
-        <a href="#" class="block text-blue-500">Contact Support</a>
-      </div>
-    </div>
-
     <!-- System -->
-    <div class="bg-white rounded shadow p-6 mb-6 max-w-2xl">
+    <div class="bg-white p-6 rounded shadow mb-6 max-w-3xl">
       <h3 class="text-lg font-semibold mb-4">System</h3>
       <div class="space-y-4">
-        <div class="flex justify-between items-center">
-          <span>App Version</span>
-          <span>v1.2.3</span>
+        <div class="flex justify-between">
+          <div>
+            <p class="font-medium">App Version</p>
+            <p class="text-sm text-gray-500">Current system version</p>
+          </div>
+          <span>v2.0.1</span>
         </div>
-        <div class="flex justify-between items-center">
-          <span>Clear Cache</span>
-          <button class="text-blue-500">Clear</button>
+        <div class="flex justify-between">
+          <div>
+            <p class="font-medium">Clear Cache</p>
+            <p class="text-sm text-gray-500">Clear old or corrupted data</p>
+          </div>
+          <button class="text-blue-500 hover:underline">Clear</button>
         </div>
+      </div>
+    </div>
+
+    <!-- Help & Support -->
+    <div class="bg-white p-6 rounded shadow mb-6 max-w-3xl">
+      <h3 class="text-lg font-semibold mb-4">Support</h3>
+      <div class="space-y-2">
+        <a href="#" class="block text-blue-500 hover:underline">Admin Guide</a>
+        <a href="#" class="block text-blue-500 hover:underline">Contact Tech Support</a>
       </div>
     </div>
 
     <!-- Logout -->
-    <div class="text-center mt-8">
+    <div class="text-center mt-10">
       <button class="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">
         Log Out
       </button>
