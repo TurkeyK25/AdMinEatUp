@@ -10,25 +10,26 @@
 <body class="flex bg-gray-100 min-h-screen">
 
   <!-- Sidebar -->
-  <aside class="w-64 bg-white shadow h-screen flex flex-col justify-between">
-    <div>
-      <h1 class="text-2xl font-bold text-blue-600 p-6">KANBAN</h1>
-      <nav class="px-4 space-y-2">
-        <a href="Dashboard.html" class="block py-2 px-4 rounded hover:bg-blue-100 nav-link font-semibold text-blue-600" data-page="Dashboard.html">Dashboard</a>
-        <a href="Voucher.html" class="block py-2 px-4 rounded hover:bg-blue-100 nav-link" data-page="Voucher.html">Voucher</a>
-        <a href="Reports.html" class="block py-2 px-4 rounded hover:bg-blue-100 nav-link" data-page="Reports.html">Reports</a>
-        <a href="User.html" class="block py-2 px-4 rounded hover:bg-blue-100 nav-link" data-page="User.html">User</a>
-        <a href="Orders.html" class="block py-2 px-4 rounded hover:bg-blue-100 nav-link" data-page="Orders.html">Orders</a>
-        <a href="Settings.html" class="block py-2 px-4 rounded hover:bg-blue-100 nav-link" data-page="Settings.html">Settings</a>
-      </nav>
-    </div>
-    <div class="p-4">
-      <a href="#" class="block py-2 px-4 rounded text-red-500 hover:bg-red-100">Log Out</a>
-    </div>
-  </aside>
+  <div id="sidebar" class="h-screen overflow-hidden"></div>
+  <script>
+    fetch('../menu/Sidebar.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('sidebar').innerHTML = html;
+        const currentPage = window.location.pathname.split("/").pop();
+        const links = document.querySelectorAll(".nav-link");
+        links.forEach(link => {
+          if (link.getAttribute("data-page") === currentPage) {
+            link.classList.add("text-blue-600", "font-semibold");
+          } else {
+            link.classList.remove("text-blue-600", "font-semibold");
+          }
+        });
+      });
+  </script>
 
   <!-- Main Content -->
-  <main class="flex-1 p-8 overflow-y-auto">
+  <div class="flex-1 p-8 overflow-y-auto">
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-2xl font-bold text-blue-600">Dashboard</h2>
@@ -36,53 +37,62 @@
     </div>
 
     <!-- Stats Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-      <div class="bg-white rounded-2xl shadow p-4 text-center cursor-pointer hover:shadow-md hover:scale-105 transition" onclick="window.location.href='User.html'">
-        <div class="w-10 h-10 mx-auto mb-2 rounded-full bg-blue-100 flex items-center justify-center">
-          <i class="fas fa-users text-blue-600"></i>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-users text-blue-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">15</div>
+          <div class="text-gray-500 text-sm">Người dùng</div>
         </div>
-        <div class="text-lg font-bold">15</div>
-        <p class="text-sm text-gray-500">Người dùng</p>
       </div>
-
-      <div class="bg-white rounded-2xl shadow p-4 text-center cursor-pointer hover:shadow-md hover:scale-105 transition" onclick="window.location.href='Orders.html'">
-        <div class="w-10 h-10 mx-auto mb-2 rounded-full bg-green-100 flex items-center justify-center">
-          <i class="fas fa-receipt text-green-600"></i>
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-receipt text-green-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">20</div>
+          <div class="text-gray-500 text-sm">Đơn hàng</div>
         </div>
-        <div class="text-lg font-bold">20</div>
-        <p class="text-sm text-gray-500">Đơn hàng</p>
       </div>
-
-      <div class="bg-white rounded-2xl shadow p-4 text-center cursor-pointer hover:shadow-md hover:scale-105 transition" onclick="window.location.href='Inventory.html'">
-        <div class="w-10 h-10 mx-auto mb-2 rounded-full bg-yellow-100 flex items-center justify-center">
-          <i class="fas fa-hamburger text-yellow-600"></i>
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-hamburger text-yellow-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">50</div>
+          <div class="text-gray-500 text-sm">Món ăn</div>
         </div>
-        <div class="text-lg font-bold">50</div>
-        <p class="text-sm text-gray-500">Món ăn</p>
       </div>
-
-      <div class="bg-white rounded-2xl shadow p-4 text-center cursor-pointer hover:shadow-md hover:scale-105 transition" onclick="window.location.href='Reviews.html'">
-        <div class="w-10 h-10 mx-auto mb-2 rounded-full bg-indigo-100 flex items-center justify-center">
-          <i class="fas fa-comment-dots text-indigo-600"></i>
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-heart text-pink-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">30</div>
+          <div class="text-gray-500 text-sm">Yêu thích</div>
         </div>
-        <div class="text-lg font-bold">18</div>
-        <p class="text-sm text-gray-500">Đánh giá</p>
       </div>
-
-      <div class="bg-white rounded-2xl shadow p-4 text-center cursor-pointer hover:shadow-md hover:scale-105 transition" onclick="window.location.href='Voucher.html'">
-        <div class="w-10 h-10 mx-auto mb-2 rounded-full bg-orange-100 flex items-center justify-center">
-          <i class="fas fa-tag text-orange-600"></i>
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-comment-dots text-indigo-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">18</div>
+          <div class="text-gray-500 text-sm">Đánh giá</div>
         </div>
-        <div class="text-lg font-bold">10</div>
-        <p class="text-sm text-gray-500">Voucher</p>
       </div>
-
-      <div class="bg-white rounded-2xl shadow p-4 text-center cursor-pointer hover:shadow-md hover:scale-105 transition" onclick="window.location.href='Category.html'">
-        <div class="w-10 h-10 mx-auto mb-2 rounded-full bg-gray-200 flex items-center justify-center">
-          <i class="fas fa-folder text-gray-600"></i>
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-tag text-orange-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">10</div>
+          <div class="text-gray-500 text-sm">Voucher</div>
         </div>
-        <div class="text-lg font-bold">8</div>
-        <p class="text-sm text-gray-500">Danh mục</p>
+      </div>
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-folder text-gray-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">8</div>
+          <div class="text-gray-500 text-sm">Danh mục</div>
+        </div>
+      </div>
+      <div class="bg-white rounded shadow p-4 flex items-center gap-4">
+        <i class="fas fa-map-marker-alt text-red-500 text-2xl"></i>
+        <div>
+          <div class="text-lg font-bold">12</div>
+          <div class="text-gray-500 text-sm">Địa chỉ</div>
+        </div>
       </div>
     </div>
 
@@ -90,7 +100,7 @@
     <div class="bg-white rounded shadow p-6">
       <h3 class="text-lg font-semibold mb-4">Hoạt động gần đây</h3>
       <div class="overflow-x-auto">
-        <table class="min-w-full text-sm text-left">
+        <table class="min-w-full text-left text-sm">
           <thead class="bg-gray-100">
             <tr>
               <th class="p-2">Thời gian</th>
@@ -118,11 +128,16 @@
               <td class="p-2">user_a</td>
               <td class="p-2"><span class="px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-xs">Chờ duyệt</span></td>
             </tr>
+            <tr>
+              <td class="p-2">6/7/2025, 11:45 AM</td>
+              <td class="p-2">Yêu thích món ăn</td>
+              <td class="p-2">foodie_01</td>
+              <td class="p-2"><span class="px-2 py-1 rounded bg-green-100 text-green-700 text-xs">Thành công</span></td>
+            </tr>
           </tbody>
         </table>
       </div>
     </div>
-  </main>
-
+  </div>
 </body>
 </html>
