@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Management - EatUp</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex bg-gray-100 min-h-screen overflow-hidden">
+  <!-- Sidebar -->
+  <div id="sidebar" class="h-screen overflow-hidden"></div>
+  <script>
+    fetch('../menu/Sidebar.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('sidebar').innerHTML = html;
+        const currentPage = window.location.pathname.split("/").pop();
+        const links = document.querySelectorAll(".nav-link");
+        links.forEach(link => {
+          if (link.getAttribute("data-page") === currentPage) {
+            link.classList.add("text-blue-600", "font-semibold");
+          } else {
+            link.classList.remove("text-blue-600", "font-semibold");
+          }
+        });
+      });
+  </script>
+
+  <!-- Main Content -->
+  <div class="flex-1 p-8 overflow-y-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold text-blue-600">User Management</h2>
+      <img src="https://via.placeholder.com/32" alt="avatar" class="w-8 h-8 rounded-full" />
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white rounded shadow p-8 flex flex-col items-center cursor-pointer hover:bg-blue-50 transition" onclick="goTo('ManageStore.html')">
+        <span class="text-3xl mb-2">🏬</span>
+        <span class="font-semibold text-lg mb-1">Quản lý nhà hàng</span>
+        <span class="text-gray-500 text-sm">Quản lý chi nhánh, cửa hàng</span>
+      </div>
+      <div class="bg-white rounded shadow p-8 flex flex-col items-center cursor-pointer hover:bg-blue-50 transition" onclick="goTo('Suppliers.html')">
+        <span class="text-3xl mb-2">👥</span>
+        <span class="font-semibold text-lg mb-1">Quản lý người dùng</span>
+        <span class="text-gray-500 text-sm">Quản lý tài khoản, quyền truy cập</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function goTo(page) {
+      window.location.href = page;
+    }
+  </script>
+</body>
+</html>
